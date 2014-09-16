@@ -43,8 +43,7 @@ namespace Sudowin.Setup.CustomActions
 	public partial class Installer : System.Configuration.Install.Installer
 	{
 		bool m_sudoers_group_already_exists = true;
-        bool m_sudoers_file_already_exists = true;
-
+        
 		public Installer()
 		{
 			InitializeComponent();
@@ -294,7 +293,6 @@ namespace Sudowin.Setup.CustomActions
 			// that comes with the installer
 			if ( File.Exists( sudoers_new_file_path ) )
 			{
-				m_sudoers_file_already_exists = true;
 				File.Delete( sudoers_old_file_path );
 			}
 

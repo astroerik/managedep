@@ -22,5 +22,20 @@ namespace Sudowin.Clients.Gui.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("We trust you have received the usual lecture from the local System\r\nAdministrator" +
+            ". It usually boils down to these three things:\r\n\r\n    #1) Respect the privacy of" +
+            " others.\r\n    #2) Think before you type.\r\n    #3) With great power comes great r" +
+            "esponsibility.")]
+        public string Disclaimer {
+            get {
+                return ((string)(this["Disclaimer"]));
+            }
+            set {
+                this["Disclaimer"] = value;
+            }
+        }
     }
 }

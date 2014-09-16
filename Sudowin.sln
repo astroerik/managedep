@@ -66,21 +66,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.Authentication.NT",
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.CredentialsCache", "Plugins.CredentialsCache\Plugins.CredentialsCache.csproj", "{4B31AF27-E489-49A7-A705-DEC80D955A54}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.CredentialsCache.LocalServer", "Plugins.CredentialsCache.LocalServer\Plugins.CredentialsCache.LocalServer.csproj", "{A9F0B711-2022-4597-A1F8-A2992DEBC936}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{F6890706-60DE-4FD5-834D-F4313CAAEBB1}"
 	ProjectSection(ProjectDependencies) = postProject
-		{A9F0B711-2022-4597-A1F8-A2992DEBC936} = {A9F0B711-2022-4597-A1F8-A2992DEBC936}
 		{3F717A4C-D43E-4520-82AA-417497FDE2B7} = {3F717A4C-D43E-4520-82AA-417497FDE2B7}
 		{A92EF75C-1853-4500-AEBC-2770DA2478CA} = {A92EF75C-1853-4500-AEBC-2770DA2478CA}
 	EndProjectSection
@@ -197,26 +184,6 @@ Global
 		{A92EF75C-1853-4500-AEBC-2770DA2478CA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A92EF75C-1853-4500-AEBC-2770DA2478CA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A92EF75C-1853-4500-AEBC-2770DA2478CA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{4B31AF27-E489-49A7-A705-DEC80D955A54}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{4B31AF27-E489-49A7-A705-DEC80D955A54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B31AF27-E489-49A7-A705-DEC80D955A54}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B31AF27-E489-49A7-A705-DEC80D955A54}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{4B31AF27-E489-49A7-A705-DEC80D955A54}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{4B31AF27-E489-49A7-A705-DEC80D955A54}.Release|.NET.ActiveCfg = Release|Any CPU
-		{4B31AF27-E489-49A7-A705-DEC80D955A54}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B31AF27-E489-49A7-A705-DEC80D955A54}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4B31AF27-E489-49A7-A705-DEC80D955A54}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4B31AF27-E489-49A7-A705-DEC80D955A54}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{A9F0B711-2022-4597-A1F8-A2992DEBC936}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{A9F0B711-2022-4597-A1F8-A2992DEBC936}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9F0B711-2022-4597-A1F8-A2992DEBC936}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A9F0B711-2022-4597-A1F8-A2992DEBC936}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A9F0B711-2022-4597-A1F8-A2992DEBC936}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A9F0B711-2022-4597-A1F8-A2992DEBC936}.Release|.NET.ActiveCfg = Release|Any CPU
-		{A9F0B711-2022-4597-A1F8-A2992DEBC936}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A9F0B711-2022-4597-A1F8-A2992DEBC936}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A9F0B711-2022-4597-A1F8-A2992DEBC936}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A9F0B711-2022-4597-A1F8-A2992DEBC936}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F6890706-60DE-4FD5-834D-F4313CAAEBB1}.Debug|.NET.ActiveCfg = Debug|Any CPU
 		{F6890706-60DE-4FD5-834D-F4313CAAEBB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F6890706-60DE-4FD5-834D-F4313CAAEBB1}.Debug|Any CPU.Build.0 = Debug|Any CPU

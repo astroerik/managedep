@@ -94,39 +94,6 @@ namespace Sudowin.Clients.Gui
 
 			#endregion
 
-			string icon_root_path = null;
-			if (Environment.OSVersion.Version.Major >= 6)
-			{
-				icon_root_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp");
-			}
-			else
-			{
-				icon_root_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), 
-					@"Microsoft\User Account Pictures");
-			}
-
-			// get the current user's account icon if they have one
-			string user_icon_path = Path.Combine(icon_root_path, WindowsIdentity.GetCurrent().Name.Split('\\')[1] + ".bmp");
-
-			// load the user's account icon if they have one, otherwise
-			// just load a randRm icon from the standard location.
-			if (File.Exists(user_icon_path))
-			{
-				m_picbox_user_icon.Load(user_icon_path);
-			}
-			else
-			{
-				string icon_directory_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-					@"Microsoft\User Account Pictures\Default Pictures");
-				if (Directory.Exists(icon_directory_path))
-				{
-					string[] icon_file_paths = Directory.GetFiles(icon_directory_path);
-					Random r = new Random();
-					int icon_file_paths_index = r.Next(0, icon_file_paths.Length - 1);
-					m_picbox_user_icon.Load(icon_file_paths[icon_file_paths_index]);
-				}
-			}
-
 			// finding the executable -- special cases
 			string[] args = Environment.GetCommandLineArgs();
 			if ( args.Length > 1 )
@@ -145,9 +112,21 @@ namespace Sudowin.Clients.Gui
 				// display the file being sudoed
 				FileInfo sudoed_cmd = new FileInfo( sudoed_cmd_string );
 				m_lbl_sudoed_cmd.Text = sudoed_cmd.Name;
-				m_picbox_sudoed_cmd.Image =
+                m_picbox_user_icon.Image =
 					Icon.ExtractAssociatedIcon( sudoed_cmd.FullName ).ToBitmap();
-			}
+            }
+            else
+            {
+                string icon_directory_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                    @"Microsoft\User Account Pictures\Default Pictures");
+                if (Directory.Exists(icon_directory_path))
+                {
+                    string[] icon_file_paths = Directory.GetFiles(icon_directory_path);
+                    Random r = new Random();
+                    int icon_file_paths_index = r.Next(0, icon_file_paths.Length - 1);
+                    m_picbox_user_icon.Load(icon_file_paths[icon_file_paths_index]);
+                }
+            }
 
 			// check to see if the Sudowin service is stopped
 			System.ServiceProcess.ServiceController sc = new System.ServiceProcess.ServiceController( "Sudowin" );
@@ -163,8 +142,8 @@ namespace Sudowin.Clients.Gui
 				m_btn_ok.Enabled = false;
 				m_lbl_warning.Text = "Sudowin service is dead to you";
 			}
-			else
-			{
+            //else
+            //{
 				// let the user know if they are locked out
                 //if ( m_isudo_server.ExceededInvalidLogonLimit )
                 //{
@@ -178,7 +157,7 @@ namespace Sudowin.Clients.Gui
                 //{
                 //    btnOk_Click( null, null );
                 //}
-			}
+            //}
 		}
 
 		private void btnOk_Click( object sender, EventArgs e )
@@ -242,5 +221,15 @@ namespace Sudowin.Clients.Gui
 		{
 			Application.Exit();
 		}
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
 	}
 }

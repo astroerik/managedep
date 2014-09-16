@@ -46,7 +46,6 @@ using Sudowin.Plugins.Authorization;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using Sudowin.Plugins.Authentication;
-using Sudowin.Plugins.CredentialsCache;
 using System.Runtime.Remoting.Contexts;
 using System.Runtime.Remoting.Messaging;
 using Sudowin.Plugins;

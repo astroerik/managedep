@@ -105,14 +105,6 @@
       <Project>{7937C406-0E88-4E48-AA1F-964E8FB8C1AD}</Project>
       <Name>Plugins.Authorization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Plugins.CredentialsCache.LocalServer\Plugins.CredentialsCache.LocalServer.csproj">
-      <Project>{a9f0b711-2022-4597-a1f8-a2992debc936}</Project>
-      <Name>Plugins.CredentialsCache.LocalServer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Plugins.CredentialsCache\Plugins.CredentialsCache.csproj">
-      <Project>{4B31AF27-E489-49A7-A705-DEC80D955A54}</Project>
-      <Name>Plugins.CredentialsCache</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{81E98C70-C681-4DD4-B6B1-154E12567B9C}</Project>
       <Name>Common</Name>

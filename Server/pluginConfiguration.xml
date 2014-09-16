@@ -13,9 +13,9 @@
 						dataSourceCacheEnabled="true"
 		/>
 
-		<plugin pluginType="credentialsCachePlugin" 
+		<!-- <plugin pluginType="credentialsCachePlugin" 
 						assemblyString="Sudowin.Plugins.CredentialsCache.LocalServer.LocalServerCredentialsCachePlugin, Sudowin.Plugins.CredentialsCache.LocalServer" 
 						serverType="Singleton"
-		/>
+		/> -->
 	</plugins>
 </pluginConfiguration>
