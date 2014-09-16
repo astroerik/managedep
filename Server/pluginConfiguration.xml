@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pluginConfiguration xmlns="http://sudowin.sourceforge.net/schemas/PluginConfiguration/">
+	<plugins>
+		<plugin pluginType="authenticationPlugin"
+						assemblyString="Sudowin.Plugins.Authentication.NT.NTAuthenticationPlugin, Sudowin.Plugins.Authentication.NT" />
+
+		<plugin pluginType="authorizationPlugin" 
+						assemblyString="Sudowin.Plugins.Authorization.Xml.XmlAuthorizationPlugin, Sudowin.Plugins.Authorization.Xml" 
+						dataSourceConnectionString="C:\Users\mnestor\Desktop\sudowin-code-210-trunk\plugins.authorization.xml\sudoers.xml" 
+						dataSourceSchemaUri="C:\Users\mnestor\Desktop\sudowin-code-210-trunk\plugins.authorization.xml\XmlAuthorizationPluginSchema.xsd" 
+						dataSourceCacheFilePath="C:\Users\mnestor\Desktop\sudowin-code-210-trunk\server\sudoers.xml.cache"
+						dataSourceCacheFrequency="00:05"
+						dataSourceCacheEnabled="true"
+		/>
+
+		<plugin pluginType="credentialsCachePlugin" 
+						assemblyString="Sudowin.Plugins.CredentialsCache.LocalServer.LocalServerCredentialsCachePlugin, Sudowin.Plugins.CredentialsCache.LocalServer" 
+						serverType="Singleton"
+		/>
+	</plugins>
+</pluginConfiguration>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+Copyright (c) 2005-2008, Schley Andrew Kutz <akutz@lostcreations.com>
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+    * Neither the name of l o s t c r e a t i o n s nor the names of its 
+    contributors may be used to endorse or promote products derived from this 
+    software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+-->
+<xs:schema id="PluginConfigurationSchema" targetNamespace="http://sudowin.sourceforge.net/schemas/PluginConfiguration/" elementFormDefault="qualified" xmlns="http://sudowin.sourceforge.net/schemas/PluginConfiguration/" xmlns:mstns="http://sudowin.sourceforge.net/schemas/PluginConfiguration/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.1">
+	<xs:element name="pluginConfiguration">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="plugins" minOccurs="1" maxOccurs="1" type="pluginsType" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="pluginType">
+		<xs:attribute name="assemblyString" type="xs:string" use="required" />
+		<xs:attribute name="serverType" type="serverTypeType" default="SingleCall" use="optional" />
+		<xs:attribute name="serverLifetime" type="xs:int" default="0" use="optional" />
+		<xs:attribute name="dataSourceConnectionString" type="xs:string" use="optional" />
+		<xs:attribute name="dataSourceSchemaUri" type="xs:string" use="optional" />
+		<xs:attribute name="enabled" type="xs:boolean" use="optional" default="true" />
+		<xs:attribute name="activationData" type="xs:string" use="optional" />
+		<xs:attribute name="pluginType" type="pluginTypeType" use="required" />
+		<xs:attribute name="dataSourceCacheFilePath" type="xs:string" use="optional" />
+		<xs:attribute name="dataSourceCacheUpdateFrequency" type="xs:string" use="optional" default="00:05" />
+		<xs:attribute name="dataSourceCacheEnabled" type="xs:boolean" use="optional" default="false" />
+		<xs:attribute name="dataSourceCacheUseAsPrimary" type="xs:boolean" use="optional" default="false" />
+		<xs:attribute name="dataSourceCacheUseStaleCache" type="xs:boolean" use="optional" default="true" />
+	</xs:complexType>
+	<xs:simpleType name="pluginTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="authenticationPlugin" />
+			<xs:enumeration value="authorizationPlugin" />
+			<xs:enumeration value="credentialsCachePlugin" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="serverTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SingleCall" />
+			<xs:enumeration value="Singleton" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="pluginsType">
+		<xs:sequence>
+			<xs:sequence>
+				<xs:element name="plugin" type="pluginType" minOccurs="3" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
