@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{57689E0E-FA82-4263-BE48-F824AEF0C940}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,86 +13,43 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Sudo for Windows.url = Sudo for Windows.url
 		sudowin.snk = sudowin.snk
 	EndProjectSection
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{81E98C70-C681-4DD4-B6B1-154E12567B9C}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallbackApplication", "CallbackApplication\CallbackApplication.csproj", "{E8BC324F-6B4B-4608-976B-4CACCAB017D9}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.Authorization", "Plugins.Authorization\Plugins.Authorization.csproj", "{7937C406-0E88-4E48-AA1F-964E8FB8C1AD}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.Authorization.Xml", "Plugins.Authorization.Xml\Plugins.Authorization.Xml.csproj", "{3F717A4C-D43E-4520-82AA-417497FDE2B7}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clients.Console", "Clients.Console\Clients.Console.csproj", "{5CA0F5B5-797A-4CA5-A644-31A7CEE42614}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clients.Gui", "Clients.Gui\Clients.Gui.csproj", "{34C0CA52-574C-4421-B96C-C99A7715679B}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.Authentication", "Plugins.Authentication\Plugins.Authentication.csproj", "{5180BFF2-FADD-49CC-B0F3-E7EF1A7F9CCA}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.Authentication.NT", "Plugins.Authentication.NT\Plugins.Authentication.NT.csproj", "{A92EF75C-1853-4500-AEBC-2770DA2478CA}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{F6890706-60DE-4FD5-834D-F4313CAAEBB1}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3F717A4C-D43E-4520-82AA-417497FDE2B7} = {3F717A4C-D43E-4520-82AA-417497FDE2B7}
+		{E8BC324F-6B4B-4608-976B-4CACCAB017D9} = {E8BC324F-6B4B-4608-976B-4CACCAB017D9}
 		{A92EF75C-1853-4500-AEBC-2770DA2478CA} = {A92EF75C-1853-4500-AEBC-2770DA2478CA}
-	EndProjectSection
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
+		{D5DC6FBD-D26C-4811-A1BF-27A6E9906883} = {D5DC6FBD-D26C-4811-A1BF-27A6E9906883}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins", "Plugins\Plugins.csproj", "{E5CBBCD1-A264-427E-9A5D-261E1AA06F49}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{94381724-9D98-4F4B-B69E-BAC4BAA66999}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
+	ProjectSection(ProjectDependencies) = postProject
+		{7937C406-0E88-4E48-AA1F-964E8FB8C1AD} = {7937C406-0E88-4E48-AA1F-964E8FB8C1AD}
+		{D5DC6FBD-D26C-4811-A1BF-27A6E9906883} = {D5DC6FBD-D26C-4811-A1BF-27A6E9906883}
+		{5180BFF2-FADD-49CC-B0F3-E7EF1A7F9CCA} = {5180BFF2-FADD-49CC-B0F3-E7EF1A7F9CCA}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Setup.CustomActions", "Setup.CustomActions\Setup.CustomActions.csproj", "{82E5CCD5-7C49-48FD-997C-DF045D6E6A21}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSVtoXML", "CSVtoXML\CSVtoXML.csproj", "{D5DC6FBD-D26C-4811-A1BF-27A6E9906883}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -226,6 +183,16 @@ Global
 		{82E5CCD5-7C49-48FD-997C-DF045D6E6A21}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82E5CCD5-7C49-48FD-997C-DF045D6E6A21}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{82E5CCD5-7C49-48FD-997C-DF045D6E6A21}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D5DC6FBD-D26C-4811-A1BF-27A6E9906883}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{D5DC6FBD-D26C-4811-A1BF-27A6E9906883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5DC6FBD-D26C-4811-A1BF-27A6E9906883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5DC6FBD-D26C-4811-A1BF-27A6E9906883}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D5DC6FBD-D26C-4811-A1BF-27A6E9906883}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D5DC6FBD-D26C-4811-A1BF-27A6E9906883}.Release|.NET.ActiveCfg = Release|Any CPU
+		{D5DC6FBD-D26C-4811-A1BF-27A6E9906883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5DC6FBD-D26C-4811-A1BF-27A6E9906883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5DC6FBD-D26C-4811-A1BF-27A6E9906883}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D5DC6FBD-D26C-4811-A1BF-27A6E9906883}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

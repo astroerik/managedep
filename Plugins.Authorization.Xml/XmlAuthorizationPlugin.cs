@@ -74,7 +74,7 @@ namespace Sudowin.Plugins.Authorization.Xml
 			Null = 2,
 		}
 		
-		/// <summary>
+		/// <summary>k
 		///		True if the sudoers file has been read;
 		///		otherwise false.
 		/// </summary>
@@ -243,12 +243,12 @@ namespace Sudowin.Plugins.Authorization.Xml
 						else
 						{
 							user_path = new object[] 
-						{
-							string.Format(
-								CultureInfo.CurrentCulture,
-								"WinNT://{0}/{1}",
-								usr_dhn_part, usr_un_part )
-						};
+						    {
+							    string.Format(
+								    CultureInfo.CurrentCulture,
+								    "WinNT://{0}/{1}",
+								    usr_dhn_part, usr_un_part )
+						    };
 						}
 
 						is_member = bool.Parse( Convert.ToString(
@@ -310,7 +310,7 @@ namespace Sudowin.Plugins.Authorization.Xml
 		{
 			return ( m_xml_doc.GetElementsByTagName( "userGroup" ) );
 		}
-
+        
 		/// <summary>
 		///		Opens a connection to the xml file
 		///		and validate the data with the given
@@ -320,138 +320,15 @@ namespace Sudowin.Plugins.Authorization.Xml
 		{
 			m_ts.TraceEvent( TraceEventType.Start, 10, "opening XmlAuthorizationPlugin datasource connection" );
 
-			// the sudoers cache file is the primary data source
-			if ( DataSourceCacheUseAsPrimary )
+			// the sudoers file exists
+			if ( File.Exists( DataSourceConnectionString ) )
 			{
-				// the sudoers cache file exists
-				if ( File.Exists( DataSourceCacheFilePath ) )
-				{
-					// the sudoers cache file needs to be updated
-					// from the sudoers file
-					if ( ( DateTime.Now - File.GetLastWriteTime( DataSourceCacheFilePath ) ) >
-						DataSourceCacheUpdateFrequency )
-					{
-						// the sudoers file exists
-						if ( File.Exists( DataSourceConnectionString ) )
-						{
-							LoadFromDataSource( DataSourceConnectionString, DataSourceSchemaUri );
-							m_xml_doc.Save( DataSourceCacheFilePath );
-						}
-
-						// the sudoers file does not exist
-						else
-						{
-							if ( DataSourceCacheUseStaleCache )
-							{
-								LoadFromDataSource( DataSourceCacheFilePath, DataSourceSchemaUri );
-							}
-							else
-							{
-								throw ( new FileNotFoundException( "sudoers file not found" ) );
-							}
-						}
-					}
-
-					// load the sudoers cache file into m_xml_doc
-					else
-					{
-						LoadFromDataSource( DataSourceCacheFilePath, DataSourceSchemaUri );
-					}
-				}
-
-				// cache does not exist, create it
-				else
-				{
-					// the sudoers file exists
-					if ( File.Exists( DataSourceConnectionString ) )
-					{
-						LoadFromDataSource( DataSourceConnectionString, DataSourceSchemaUri );
-						m_xml_doc.Save( DataSourceCacheFilePath );
-					}
-
-					// the sudoers file does not exist
-					else
-					{
-						throw ( new FileNotFoundException( "sudoers file not found" ) );
-					}
-				}
+				// load the sudoers file
+				LoadFromDataSource( DataSourceConnectionString, DataSourceSchemaUri );
 			}
-			
-			// the sudoers cache file is not the primary source
 			else
 			{
-				// the sudoers file exists
-				if ( File.Exists( DataSourceConnectionString ) )
-				{
-					// load the sudoers file
-					LoadFromDataSource( DataSourceConnectionString, DataSourceSchemaUri );
-
-					// the sudoers cache is enabled
-					if ( DataSourceCacheEnabled )
-					{
-						// the sudoers cache file exists
-						if ( File.Exists( DataSourceCacheFilePath ) )
-						{
-							// the sudoers cache file needs to be updated
-							// from the sudoers file
-							if ( ( DateTime.Now - File.GetLastWriteTime( DataSourceCacheFilePath ) ) >
-								DataSourceCacheUpdateFrequency )
-							{
-								m_xml_doc.Save( DataSourceCacheFilePath );
-							}
-						}
-
-						// the sudoers cache file does not exist
-						else
-						{
-							// create the sudoers cache file
-							m_xml_doc.Save( DataSourceCacheFilePath );
-						}
-					}
-				}
-
-				// the sudoers file does not exist
-				else
-				{
-					// use the sudoers cache file
-					if ( DataSourceCacheEnabled )
-					{
-						// the sudoers cache file exists
-						if ( File.Exists( DataSourceCacheFilePath ) )
-						{
-							// the sudoers cache file needs to be updated
-							// from the sudoers file
-							if ( ( DateTime.Now - File.GetLastWriteTime( DataSourceCacheFilePath ) ) >
-								DataSourceCacheUpdateFrequency )
-							{
-								if ( DataSourceCacheUseStaleCache )
-								{
-									LoadFromDataSource( DataSourceCacheFilePath, DataSourceSchemaUri );
-								}
-								else
-								{
-									throw ( new Exception( "DataSourceCacheUseStaleCache not enabled" ) );
-								}
-							}
-
-							// the sudoers cache is up to date so load it
-							else
-							{
-								LoadFromDataSource( DataSourceCacheFilePath, DataSourceSchemaUri );
-							}
-						}
-
-						// the sudoers cache file does not exist
-						else
-						{
-							throw ( new FileNotFoundException( "sudoers cache file not found" ) );
-						}
-					}
-					else
-					{
-						throw ( new Exception( "DataSourceCacheEnabled is false" ) );
-					}
-				}
+				throw ( new FileNotFoundException( "sudoers cache file not found" ) );
 			}
 
 			m_ts.TraceEvent( TraceEventType.Stop, 10, "opened XmlAuthorizationPlugin datasource connection" );
@@ -536,25 +413,9 @@ namespace Sudowin.Plugins.Authorization.Xml
 				return ( false );
 
 			// temp values
-			int itv;
 			string stv;
 			LoggingLevelTypes llttv;
-
-			GetUserAttributeValue( unode, true, "invalidLogons", out itv );
-			userInfo.InvalidLogons = itv;
-
-			GetUserAttributeValue( unode, true, "timesExceededInvalidLogons", out itv );
-			userInfo.TimesExceededInvalidLogons = itv;
-
-			GetUserAttributeValue( unode, true, "invalidLogonTimeout", out itv );
-			userInfo.InvalidLogonTimeout = itv;
-
-			GetUserAttributeValue( unode, true, "lockoutTimeout", out itv );
-			userInfo.LockoutTimeout = itv;
-
-			GetUserAttributeValue( unode, true, "logonTimeout", out itv );
-			userInfo.LogonTimeout = itv;
-
+            
 			GetUserAttributeValue( unode, true, "privilegesGroup", out stv );
 			userInfo.PrivilegesGroup = stv;
 
@@ -563,6 +424,38 @@ namespace Sudowin.Plugins.Authorization.Xml
 			
 			return ( true );
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool UpdateConfig(bool bForce=false)
+        {
+            if (File.Exists(DataSourceConnectionString))
+            {
+                DateTime fileModified = File.GetLastWriteTime(DataSourceConnectionString);
+                if (bForce || fileModified.AddDays(1) < DateTime.Now)
+                {
+                    //get the latest file!
+                    try
+                    {
+                        string xml = (new CSVtoXML()).GetXML();
+                        if (xml.Length > 0)
+                        {
+                            File.WriteAllText(DataSourceConnectionString, xml);
+
+                            //force a reset of the xml file
+                            m_is_connection_open = false;
+                            m_xml_doc = new XmlDocument();
+                        }
+                    }
+                    catch (Exception)
+                    { }
+                }
+            }
+
+            return true;
+        }
 
 		/// <summary>
 		///		Gets a Sudowin.Common.CommandInfo structure

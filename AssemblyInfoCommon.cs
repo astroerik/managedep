@@ -24,7 +24,11 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ 
+Source is heavily modified by AETD ISSOs to limit the potential leakage of 
+sensitive information and allow for central management of sudoers.xml
+
+ */
 
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -32,9 +36,9 @@ using System.Runtime.CompilerServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyCompany("l o s t c r e a t i o n s")]
+[assembly: AssemblyCompany("NASA - AETD")]
 [assembly: AssemblyProduct("Sudowin")]
-[assembly: AssemblyCopyright("Copyright © 2005-2008 l o s t c r e a t i o n s. All rights reserved.")]
+[assembly: AssemblyCopyright(@"Copyright © 2014. NASA\AETD - All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -45,12 +49,12 @@ using System.Runtime.CompilerServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.5.0.0")]
-[assembly: AssemblyFileVersion("0.5.0.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
 
 
 #if DEBUG
-[assembly : AssemblyConfiguration("Debug")]
+[assembly: AssemblyConfiguration("Debug")]
 #else
 [assembly: AssemblyConfiguration("Release")]
 #endif

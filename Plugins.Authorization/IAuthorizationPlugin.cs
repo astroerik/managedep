@@ -39,6 +39,11 @@ namespace Sudowin.Plugins.Authorization
 	/// </summary>
 	public interface IAuthorizationPlugin : IPlugin, IDisposable
 	{
+        /// <summary>
+        /// Updates configuration if needed
+        /// </summary>
+        bool UpdateConfig(bool bForce=false);
+
 		/// <summary>
 		///		Gets a Sudowin.Common.UserInfo structure
 		///		from the authorization source for the given user name.

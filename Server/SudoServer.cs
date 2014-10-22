@@ -70,12 +70,6 @@ namespace Sudowin.Server
 		/// </summary>
 		private TraceSource m_ts = new TraceSource( "traceSrc" );
 
-        ///// <summary>
-        /////		Used to persist user credentials and other
-        /////		information between sudowin invocations.
-        ///// </summary>
-        //private ICredentialsCachePlugin m_plgn_cred_cache = null;
-		
 		/// <summary>
 		///		Used to authorize user's sudowin requests.
 		/// </summary>
@@ -99,90 +93,18 @@ namespace Sudowin.Server
 				return ( true );
 			}
 		}
+        
+        /// <summary>
+        /// Check and download latest csv confiugration from central server and generate new sudoers.xml
+        /// </summary>
+        public bool UpdateSudoers(bool bForce = false)
+        {
+            bool bSuccess = false;
 
-        ///// <summary>
-        /////		True if the user has exceeded the
-        /////		number of invalid logon attempts,
-        /////		false if otherwise.
-        ///// </summary>
-        ///// <remmarks>
-        /////		The value of this property does not
-        /////		have to be respected by the client, but
-        /////		the server will not allow the user to
-        /////		execute sudo if they have exceeded the
-        /////		invalid logon limit.
-        ///// </remmarks>
-        //public bool ExceededInvalidLogonLimit
-        //{
-        //    get
-        //    {
-        //        m_ts.TraceEvent( TraceEventType.Start, 10, 
-        //            "entering get_ExceededInvalidLogonLimit" );
-				
-        //        // declare this method's return value
-        //        bool hasExceeded;
+            m_plgn_authz.UpdateConfig(bForce);
 
-        //        string un = Thread.CurrentPrincipal.Identity.Name;
-
-        //        CredentialsCache cc = new CredentialsCache();
-        //        UserInfo ui = new UserInfo();
-
-        //        if ( m_plgn_cred_cache.GetCache( un, ref cc ) &&
-        //            m_plgn_authz.GetUserInfo( un, ref ui ) )
-        //        {
-        //            hasExceeded = cc.TimesExceededInvalidLogonCount >=
-        //                ui.TimesExceededInvalidLogons;
-        //        }
-        //        else
-        //        {
-        //            hasExceeded = false;
-        //        }
-
-        //        m_ts.TraceEvent( TraceEventType.Verbose, 10,
-        //            "{0}, hasExceeded={1}", un, hasExceeded );
-        //        m_ts.TraceEvent( TraceEventType.Stop, 10,
-        //            "exiting get_ExceededInvalidLogonLimit" );
-
-        //        return ( hasExceeded );
-        //    }
-        //}
-
-        ///// <summary>
-        /////		True if the user's credentials are cached, 
-        /////		false if otherwise.
-        ///// </summary>
-        ///// <remmarks>
-        /////		The value of this property does not
-        /////		have to be respected by the client, but 
-        /////		the server will return an immediate 
-        /////		invalid logon if the client assumes the 
-        /////		users credentials are cached when they 
-        /////		are not and passes a null passphrase to 
-        /////		the Sudo method.
-        ///// </remmarks>
-        //public bool AreCredentialsCached
-        //{
-        //    get
-        //    {
-        //        m_ts.TraceEvent( TraceEventType.Start, ( int ) EventIds.EnterPropertyGet,
-        //            "entering get_AreCredentialsCached" );
-
-        //        // declare this method's return value
-        //        bool areCached = false;
-
-        //        string un = Thread.CurrentPrincipal.Identity.Name;
-        //        string p = string.Empty;
-        //        areCached = m_plgn_cred_cache.GetCache( un, ref p );
-        //        p = string.Empty;
-
-        //        m_ts.TraceEvent( TraceEventType.Verbose, ( int ) EventIds.Verbose,
-        //            "{0}, areCached={1}", un, areCached );
-        //        m_ts.TraceEvent( TraceEventType.Stop, ( int ) EventIds.ExitPropertyGet,
-        //            "exiting get_AreCredentialsCached" );
-
-        //        return ( areCached );
-        //    }
-        //}
+            return (bSuccess);
+        }
 
 		/// <summary>
 		///		Default constructor.
@@ -279,11 +201,6 @@ namespace Sudowin.Server
 							m_plgn_authz = ( AuthorizationPlugin ) plugin;
 							break;
 						}
-                        //case "credentialsCachePlugin" :
-                        //{
-                        //    m_plgn_cred_cache = ( CredentialsCachePlugin ) plugin;
-                        //    break;
-                        //}
 						default :
 						{
 							// do nothing
@@ -475,27 +392,13 @@ namespace Sudowin.Server
                 throw SudoException.GetException(SudoResultTypes.CommandNotAllowed);
 			}
 
-			// make sure the user has not exceeded any invalid logon limits
-            //CredentialsCache cc = new CredentialsCache();
-            //if ( m_plgn_cred_cache.GetCache( un, ref cc ) && 
-            //    cc.InvalidLogonCount >= ui.InvalidLogons - 1 )
-            //{
-            //    SudoResultTypes srt = GetLimitDetails(un, ref ui, ref cc);
-            //    LogResult( un, commandPath, commandArguments, ui.LoggingLevel, srt );
-            //    throw SudoException.GetException(srt);
-            //}
-
-			// check to see if the user has a cached passphrase
-            //if ( !m_plgn_cred_cache.GetCache( un, ref passphrase ) )
-            //{
-				// validate the users logon credentials
-				if ( !LogonUser( un, passphrase, ref ui /*, ref cc*/ ) )
-				{
-                    LogResult( un, commandPath, commandArguments, ui.LoggingLevel,
-						SudoResultTypes.InvalidLogon );
-                    throw SudoException.GetException(SudoResultTypes.InvalidLogon);
-				}
-            //}
+			// validate the users logon credentials
+			if ( !LogonUser( un, passphrase, ref ui /*, ref cc*/ ) )
+			{
+                LogResult( un, commandPath, commandArguments, ui.LoggingLevel,
+					SudoResultTypes.InvalidLogon );
+                throw SudoException.GetException(SudoResultTypes.InvalidLogon);
+			}
 
 			// handle special cases in the arguments section
 
@@ -637,7 +540,13 @@ namespace Sudowin.Server
 
                 try
                 {
-                    EventLog.WriteEntry("Sudowin",
+                    string source = "Sudowin - Usage";
+                    if (!EventLog.SourceExists(source))
+                    {
+                        EventLog.CreateEventSource(source, "AETD");
+                    }
+
+                    EventLog.WriteEntry(source,
                         string.Format(CultureInfo.CurrentCulture,
                             "{0} - {1}\n{2} {3}", userName, sudoResultType, commandPath, commandArguments),
                         elet,
@@ -657,8 +566,7 @@ namespace Sudowin.Server
 		private bool LogonUser( 
 			string userName,
 			string passphrase, 
-			ref UserInfo userInfo /*,
-			ref CredentialsCache credCache */ )
+			ref UserInfo userInfo )
 		{
 			m_ts.TraceEvent( TraceEventType.Start, ( int ) EventIds.EnterMethod,
 				"entering LogonUser( string, string, ref UserInfo, ref UserCache )" );
@@ -672,22 +580,7 @@ namespace Sudowin.Server
 
 			// verify the user's credentials
 			bool logonSuccessful = m_plgn_authn.VerifyCredentials( dn_part, un_part, passphrase );
-
-            //if ( logonSuccessful )
-            //{
-            //    // cache the user's passphrase and set it's expiration date
-            //    m_plgn_cred_cache.SetCache( userName, passphrase );
-            //    m_plgn_cred_cache.ExpireCache( userName, userInfo.LogonTimeout );
-            //}
-            //else
-            //{
-            //    ++credCache.InvalidLogonCount;
-
-            //    // cache the user's InvalidLogonCount and set it's expiration date
-            //    m_plgn_cred_cache.SetCache( userName, credCache );
-            //    m_plgn_cred_cache.ExpireCache( userName, userInfo.InvalidLogonTimeout );
-            //}
-
+            
 			m_ts.TraceEvent( TraceEventType.Verbose, ( int ) EventIds.Verbose,
 				"{0}, logonSuccessful={1}", userName, logonSuccessful );
 			m_ts.TraceEvent( TraceEventType.Stop, ( int ) EventIds.ExitMethod,
@@ -695,69 +588,7 @@ namespace Sudowin.Server
 
 			return ( logonSuccessful );
 		}
-
-        //private SudoResultTypes GetLimitDetails( 
-        //    string userName, 
-        //    ref UserInfo userInfo, 
-        //    ref CredentialsCache credCache )
-        //{
-        //    m_ts.TraceEvent( TraceEventType.Start, ( int ) EventIds.EnterMethod,
-        //        "entering GetLimitDetails( string, ref UserInfo, ref CredentialsCache )" );
-        //    m_ts.TraceEvent( TraceEventType.Verbose, ( int ) EventIds.ParemeterValues,
-        //        "userName={0},userInfo=,credCache=", userName );
-
-        //    // declare this method's return value
-        //    SudoResultTypes sudoResult;
-
-        //    // let the user know they have been locked out
-        //    if ( credCache.TimesExceededInvalidLogonCount >=
-        //        userInfo.TimesExceededInvalidLogons )
-        //    {
-        //        sudoResult = SudoResultTypes.LockedOut;
-        //        m_ts.TraceEvent( TraceEventType.Verbose, ( int ) EventIds.Verbose,
-        //            "{0}, previously locked out", userName );
-        //    }
-			
-        //    // lock the user out and set their lockout expiration
-        //    else if ( credCache.TimesExceededInvalidLogonCount >=
-        //        userInfo.TimesExceededInvalidLogons - 1 )
-        //    {
-        //        ++credCache.TimesExceededInvalidLogonCount;
-
-        //        m_plgn_cred_cache.SetCache( userName, credCache );
-        //        m_plgn_cred_cache.ExpireCache( userName, userInfo.LockoutTimeout );
-
-        //        sudoResult = SudoResultTypes.LockedOut;
-        //        m_ts.TraceEvent( TraceEventType.Verbose, ( int ) EventIds.Verbose,
-        //            "{0}, locked out", userName );
-        //    }
-
-        //    // move the user 1 step closer to being locked out
-        //    else
-        //    {
-        //        ++credCache.TimesExceededInvalidLogonCount;
-
-        //        // reset the user's invalid logon count so their
-        //        // next call to sudo does not immediately result
-        //        // in an SudoResultTypes.TooManyInvalidLogons
-        //        credCache.InvalidLogonCount = 0;
-
-        //        m_plgn_cred_cache.SetCache( userName, credCache );
-        //        sudoResult = SudoResultTypes.TooManyInvalidLogons;
-        //        m_ts.TraceEvent( TraceEventType.Verbose, ( int ) EventIds.Verbose,
-        //            "{0}, {1} invalid attempts away from being locked out", 
-        //            userName, 
-        //            userInfo.TimesExceededInvalidLogons - credCache.TimesExceededInvalidLogonCount );
-        //    }
-
-        //    m_ts.TraceEvent( TraceEventType.Verbose, ( int ) EventIds.Verbose,
-        //        "{0}, sudoResult={1}", userName, sudoResult );
-        //    m_ts.TraceEvent( TraceEventType.Stop, ( int ) EventIds.ExitMethod,
-        //        "exiting GetLimitDetails( string, ref UserInfo, ref UserCache )" );
-
-        //    return ( sudoResult );
-        //}
-
+        
 		private bool CreateProcessAsUser( 
 			IntPtr userToken,
 			string passphrase,

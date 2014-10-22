@@ -26,6 +26,7 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+using Microsoft.Win32;
 using System;
 using System.Runtime.InteropServices;
 
@@ -292,11 +293,23 @@ namespace Sudowin.Plugins.Authentication.NT
         /// </returns>
         public override bool VerifyCredentials(string domainOrComputerName, string userName, string password)
         {
+            int scValue = (int)Registry.GetValue("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "scforceoption", 0);
+
+            // Disable piv required
+            if (scValue == 1)
+                Registry.SetValue("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "scforceoption", 0);
+
             IntPtr hLogon = IntPtr.Zero;
             bool logonSuccessful = LogonUser(userName, domainOrComputerName, password,
-                LogonType.NewCredentials, LogonProvider.WinNT50, out hLogon);
+                LogonType.Interactive, LogonProvider.WinNT50, out hLogon);
+
+            // set it back to piv required
+            if (scValue == 1)
+                Registry.SetValue("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "scforceoption", 1);
+
             if (logonSuccessful)
                 CloseHandle(hLogon);
+
             return (logonSuccessful);
         }
     }

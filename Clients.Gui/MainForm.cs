@@ -142,22 +142,13 @@ namespace Sudowin.Clients.Gui
 				m_btn_ok.Enabled = false;
 				m_lbl_warning.Text = "Sudowin service is dead to you";
 			}
-            //else
-            //{
-				// let the user know if they are locked out
-                //if ( m_isudo_server.ExceededInvalidLogonLimit )
-                //{
-                    //m_txtbox_password.Enabled = false;
-                    //m_btn_ok.Enabled = false;
-                    //m_lbl_warning.Text = "Locked out";
-                //}
 
-				// go ahead if the credentials are cached
-                //if ( m_isudo_server.AreCredentialsCached )
-                //{
-                //    btnOk_Click( null, null );
-                //}
-            //}
+            //enable button if we can potentially update sudoers.xml
+            if (File.Exists(@"C:\ProgramData\dell\KACE\AMP_CONNECTED") && m_btn_ok.Enabled)
+            {
+                updateSudoers.Enabled = true;
+                sendUpdateSudoersSignal(false);
+            }
 		}
 
 		private void btnOk_Click( object sender, EventArgs e )
@@ -166,34 +157,25 @@ namespace Sudowin.Clients.Gui
 			// holds the result of the sudo invocation
 			SudoResultTypes srt;
 
-			// let the user know if they are locked out
-            //if ( m_isudo_server.ExceededInvalidLogonLimit )
-            //{
-            //    srt = SudoResultTypes.LockedOut;
-            //}
-            //else
-            //{
-				// get the password
-				string password = /*m_isudo_server.AreCredentialsCached ?
-					string.Empty : */m_txtbox_password.Text;
+			// get the password
+			string password = m_txtbox_password.Text;
 
-				// get the command path and arguments
-				string[] args = Environment.GetCommandLineArgs();
-				string cmd_path = args[ 1 ];
-				string cmd_args = string.Join( " ", args, 2, args.Length - 2 );
+			// get the command path and arguments
+			string[] args = Environment.GetCommandLineArgs();
+			string cmd_path = args[ 1 ];
+			string cmd_args = string.Join( " ", args, 2, args.Length - 2 );
 
-				// invoke sudo
-                try
-                {
-                    srt = m_isudo_server.Sudo(password, cmd_path, cmd_args);
-                }
-                catch (SudoException ex)
-                {
-                    m_lbl_warning.Text = ex.Message;
-                    srt = ex.SudoResultType;
-                }
+			// invoke sudo
+            try
+            {
+                srt = m_isudo_server.Sudo(password, cmd_path, cmd_args);
+            }
+            catch (SudoException ex)
+            {
+                m_lbl_warning.Text = ex.Message;
+                srt = ex.SudoResultType;
+            }
 
-            //}
             // clear password
             m_txtbox_password.Text = string.Empty;
             switch (srt)
@@ -230,6 +212,31 @@ namespace Sudowin.Clients.Gui
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void sendUpdateSudoersSignal(bool bForce=false)
+        {
+            bool enabled = updateSudoers.Enabled;
+            bool bUpdated = false;
+            try
+            {
+                updateSudoers.Text = "...";
+                m_btn_ok.Enabled = false;
+                updateSudoers.Enabled = false;
+                bUpdated = m_isudo_server.UpdateSudoers(bForce);
+            }
+            finally
+            {
+                updateSudoers.Text = bUpdated ? "Updated" : "Update";
+                updateSudoers.Enabled = enabled;
+                m_btn_ok.Enabled = true;
+                m_txtbox_password.Enabled = true;
+            }
+        }
+
+        private void updateSudoers_Click(object sender, EventArgs e)
+        {
+            sendUpdateSudoersSignal(true);
         }
 	}
 }

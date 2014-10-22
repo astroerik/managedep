@@ -76,6 +76,15 @@ namespace Sudowin.Plugins.Authorization
 		{
 			throw new Exception( "This method must be overriden." );
 		}
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool UpdateConfig(bool bForce = false)
+        {
+            throw new Exception("This method must be overriden.");
+        }
 
 		/// <summary>
 		///		Gets a Sudowin.Common.CommandInfo structure

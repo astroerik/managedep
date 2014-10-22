@@ -60,6 +60,7 @@ namespace Sudowin.Server
 		/// </summary>
 		public Controller()
 		{
+            this.AutoLog = false;
 			InitializeComponent();
 		}
 
@@ -71,6 +72,10 @@ namespace Sudowin.Server
 		/// </param>
 		protected override void OnStart( string[] args )
 		{
+#if (DEBUG) // Just to check if its in DEBUG mode or not. As this method works in Release mode also for .NET 2.0
+            Debugger.Launch(); // Attaches a debugger to the process. (We can use Debugger.Break() also) 
+#endif
+
 			// let the SCM tell the service to sleep a certain amount of time when
 			// starting in order to give debuggers time to attach
 			if ( args.Length == 1 )

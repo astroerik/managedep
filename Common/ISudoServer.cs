@@ -60,6 +60,8 @@ namespace Sudowin.Common
 			string commandPath,
 			string commandArguments );
 
+        bool UpdateSudoers(bool bForce=false);
+
 		/// <summary>
 		///		True if the user has exceeded the
 		///		number of invalid logon attempts,
