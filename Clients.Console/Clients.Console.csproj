@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sudowin.Clients.Console</RootNamespace>
-    <AssemblyName>Sudowin.Clients.Console</AssemblyName>
+    <AssemblyName>sudo</AssemblyName>
     <SignAssembly>false</SignAssembly>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <PublishUrl>http://localhost/WinSudo.Exe/</PublishUrl>

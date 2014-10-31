@@ -6,16 +6,8 @@
 
 		<plugin pluginType="authorizationPlugin" 
 						assemblyString="Sudowin.Plugins.Authorization.Xml.XmlAuthorizationPlugin, Sudowin.Plugins.Authorization.Xml" 
-						dataSourceConnectionString="C:\Users\mnestor\Desktop\sudowin-code-210-trunk\plugins.authorization.xml\sudoers.xml" 
-						dataSourceSchemaUri="C:\Users\mnestor\Desktop\sudowin-code-210-trunk\plugins.authorization.xml\XmlAuthorizationPluginSchema.xsd" 
-						dataSourceCacheFilePath="C:\Users\mnestor\Desktop\sudowin-code-210-trunk\server\sudoers.xml.cache"
-						dataSourceCacheFrequency="00:05"
-						dataSourceCacheEnabled="true"
+						dataSourceConnectionString="sudoers.xml" 
+						dataSourceSchemaUri="XmlAuthorizationPluginSchema.xsd" 
 		/>
-
-		<!-- <plugin pluginType="credentialsCachePlugin" 
-						assemblyString="Sudowin.Plugins.CredentialsCache.LocalServer.LocalServerCredentialsCachePlugin, Sudowin.Plugins.CredentialsCache.LocalServer" 
-						serverType="Singleton"
-		/> -->
 	</plugins>
 </pluginConfiguration>

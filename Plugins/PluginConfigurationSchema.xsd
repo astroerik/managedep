@@ -45,17 +45,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		<xs:attribute name="enabled" type="xs:boolean" use="optional" default="true" />
 		<xs:attribute name="activationData" type="xs:string" use="optional" />
 		<xs:attribute name="pluginType" type="pluginTypeType" use="required" />
-		<xs:attribute name="dataSourceCacheFilePath" type="xs:string" use="optional" />
-		<xs:attribute name="dataSourceCacheUpdateFrequency" type="xs:string" use="optional" default="00:05" />
-		<xs:attribute name="dataSourceCacheEnabled" type="xs:boolean" use="optional" default="false" />
-		<xs:attribute name="dataSourceCacheUseAsPrimary" type="xs:boolean" use="optional" default="false" />
-		<xs:attribute name="dataSourceCacheUseStaleCache" type="xs:boolean" use="optional" default="true" />
 	</xs:complexType>
 	<xs:simpleType name="pluginTypeType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="authenticationPlugin" />
 			<xs:enumeration value="authorizationPlugin" />
-			<xs:enumeration value="credentialsCachePlugin" />
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="serverTypeType">

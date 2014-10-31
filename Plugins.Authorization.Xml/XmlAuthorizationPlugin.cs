@@ -319,6 +319,7 @@ namespace Sudowin.Plugins.Authorization.Xml
 		private void Open()
 		{
 			m_ts.TraceEvent( TraceEventType.Start, 10, "opening XmlAuthorizationPlugin datasource connection" );
+            m_ts.TraceEvent(TraceEventType.Start, 10, DataSourceConnectionString);
 
 			// the sudoers file exists
 			if ( File.Exists( DataSourceConnectionString ) )
@@ -552,7 +553,7 @@ namespace Sudowin.Plugins.Authorization.Xml
 				return ( null );
 				
 			FileStream fs = new FileStream( commandPath, FileMode.Open, FileAccess.Read );
-			MD5 md5 = MD5.Create();
+            SHA1 md5 = SHA1CryptoServiceProvider.Create();
 			byte[] hash = md5.ComputeHash( fs );
 			StringBuilder sb = new StringBuilder( 32 );
 			for ( int x = 0; x < hash.Length; ++x )

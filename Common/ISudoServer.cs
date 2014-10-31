@@ -61,42 +61,7 @@ namespace Sudowin.Common
 			string commandArguments );
 
         bool UpdateSudoers(bool bForce=false);
-
-		/// <summary>
-		///		True if the user has exceeded the
-		///		number of invalid logon attempts,
-		///		false if otherwise.
-		/// </summary>
-		/// <remmarks>
-		///		The value of this property does not
-		///		have to be respected by the client, but
-		///		the server will not allow the user to
-		///		execute sudo if they have exceeded the
-		///		invalid logon limit.
-		/// </remmarks>
-        //bool ExceededInvalidLogonLimit
-        //{
-        //    get;
-        //}
-
-		/// <summary>
-		///		True if the user's credentials are cached, 
-		///		false if otherwise.
-		/// </summary>
-		/// /// <remmarks>
-		///		The value of this property does not
-		///		have to be respected by the client, but
-		///		the server will return an immediate
-		///		invalid logon if the client assumes the
-		///		users credentials are cached when they 
-		///		are not and passes a null password to 
-		///		the Sudo method.
-		/// </remmarks>
-        //bool AreCredentialsCached
-        //{
-        //    get;
-        //}
-
+        
 		/// <summary>
 		///		This is a dummy property.  It enables
 		///		clients to trap an exception that will occur

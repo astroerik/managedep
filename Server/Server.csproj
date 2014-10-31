@@ -54,6 +54,12 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Sudo.WindowsService.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>AA0CCEDA56B0175151185281F5D14E753D28A032</ManifestCertificateThumbprint>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -71,12 +77,6 @@
       <Link>AssemblyInfoCommon.cs</Link>
     </Compile>
     <Compile Include="ModuleSuppressions.cs" />
-    <Compile Include="ProjectInstaller.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ProjectInstaller.Designer.cs">
-      <DependentUpon>ProjectInstaller.cs</DependentUpon>
-    </Compile>
     <Compile Include="SudoServer.cs" />
     <Compile Include="Controller.cs">
       <SubType>Component</SubType>
@@ -133,13 +133,12 @@
       <SubType>Designer</SubType>
       <DependentUpon>Controller.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProjectInstaller.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ProjectInstaller.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="pluginConfiguration.xml" />
+    <Content Include="pluginConfiguration.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sudoers.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

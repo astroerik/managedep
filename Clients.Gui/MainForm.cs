@@ -48,15 +48,9 @@ namespace Sudowin.Clients.Gui
 		/// </summary>
 		private ISudoServer m_isudo_server;
 
-		/// <summary>
-		///		True if the user has cached credentials and the
-		///		form does not need to be displayed; otherwise false.
-		/// </summary>
-		internal bool ExitedEarlyWithCachedCredentials = false;
-
 		public MainForm()
-		{
-			InitializeComponent();
+        {
+            InitializeComponent();
 
 			#region configure remoting
 
@@ -64,7 +58,7 @@ namespace Sudowin.Clients.Gui
 			Uri uri = new Uri(
 				Assembly.GetExecutingAssembly().GetName().CodeBase );
 
-			// configure remoting channels and objects
+            // configure remoting channels and objects
 			RemotingConfiguration.Configure( uri.LocalPath + ".config", true );
 
 			// get the server object that is used to elevate
@@ -75,7 +69,7 @@ namespace Sudowin.Clients.Gui
 			WellKnownClientTypeEntry[] wkts =
 				RemotingConfiguration.GetRegisteredWellKnownClientTypes();
 
-			// loop through the list of well known clients until
+            // loop through the list of well known clients until
 			// the SudoServer object is found
 			for ( int x = 0; x < wkts.Length && m_isudo_server == null; ++x )
 			{
@@ -83,7 +77,7 @@ namespace Sudowin.Clients.Gui
 					wkts[ x ].ObjectUrl ) as ISudoServer;
 			}
 
-			bool is_sudo_server_comm_link_open = false;
+            bool is_sudo_server_comm_link_open = false;
 			try
 			{
 				is_sudo_server_comm_link_open = m_isudo_server.IsConnectionOpen;
@@ -94,11 +88,11 @@ namespace Sudowin.Clients.Gui
 
 			#endregion
 
-			// finding the executable -- special cases
+            // finding the executable -- special cases
 			string[] args = Environment.GetCommandLineArgs();
 			if ( args.Length > 1 )
 			{
-				string env_args = string.Join( " ", args );
+                string env_args = string.Join( " ", args );
 				string sudoed_cmd_string = args[ 1 ];
 
 				// msi files
@@ -182,7 +176,6 @@ namespace Sudowin.Clients.Gui
 			{
 				case SudoResultTypes.SudoK :
 				{
-					ExitedEarlyWithCachedCredentials = true;
 					this.Close();
 					break;
 				}

@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System;
+using System.IO;
 using System.Data;
 using Sudowin.Common;
 using System.Diagnostics;
@@ -34,6 +35,7 @@ using System.Globalization;
 using System.Configuration;
 using System.Text.RegularExpressions;
 using System.Runtime.Remoting.Lifetime;
+using System.Reflection;
 
 namespace Sudowin.Plugins
 {
@@ -103,10 +105,11 @@ namespace Sudowin.Plugins
 			{
 				if ( m_config_file == null )
 				{
-					string plugin_config_uri = ConfigurationManager.AppSettings[
-						"pluginConfigurationUri" ];
-					string plugin_config_schema_uri = ConfigurationManager.AppSettings[
-						"pluginConfigurationSchemaUri" ];
+                    string root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Substring(6);
+					string plugin_config_uri = Path.Combine(root, ConfigurationManager.AppSettings[
+						"pluginConfigurationUri" ]);
+					string plugin_config_schema_uri = Path.Combine(root, ConfigurationManager.AppSettings[
+						"pluginConfigurationSchemaUri" ]);
 					m_config_file = new DataSet();
 					try
 					{
@@ -141,9 +144,10 @@ namespace Sudowin.Plugins
 			{
 				if ( m_data_source_connection_string == null )
 				{
+                    string root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Substring(6);
 					m_data_source_connection_string = 
-						GetStringValue( ConfigFile.Tables[ "plugin" ].Rows[ 
-						Index ][ "dataSourceConnectionString" ], null );
+						Path.Combine(root, GetStringValue( ConfigFile.Tables[ "plugin" ].Rows[ 
+						Index ][ "dataSourceConnectionString" ], null ));
 				}
 				return ( m_data_source_connection_string );
 			}
@@ -163,9 +167,10 @@ namespace Sudowin.Plugins
 			{
 				if ( m_data_source_schema_uri == null )
 				{
+                    string root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Substring(6);
 					string uri_string =
-						GetStringValue( ConfigFile.Tables[ "plugin" ].Rows[ 
-						Index ][ "dataSourceSchemaUri" ], null );
+						Path.Combine(root, GetStringValue( ConfigFile.Tables[ "plugin" ].Rows[ 
+						Index ][ "dataSourceSchemaUri" ], null ));
 					if ( uri_string != null )
 					{
 						m_data_source_schema_uri = new Uri( uri_string );

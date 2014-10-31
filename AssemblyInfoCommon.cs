@@ -36,9 +36,9 @@ using System.Runtime.CompilerServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyCompany("NASA - AETD")]
+[assembly: AssemblyCompany("AETD - NASA")]
 [assembly: AssemblyProduct("Sudowin")]
-[assembly: AssemblyCopyright(@"Copyright © 2014. NASA\AETD - All rights reserved.")]
+[assembly: AssemblyCopyright(@"Copyright ©2014. NASA\AETD - All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -49,8 +49,8 @@ using System.Runtime.CompilerServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.038")]
+[assembly: AssemblyFileVersion("1.1.038")]
 
 
 #if DEBUG

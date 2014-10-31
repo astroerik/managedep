@@ -125,10 +125,11 @@ namespace Sudowin.Server
 
 		private void LoadPlugins()
 		{
-			string plugin_config_uri = ConfigurationManager.AppSettings[
-				"pluginConfigurationUri" ];
-			string plugin_config_schema_uri = ConfigurationManager.AppSettings[
-				"pluginConfigurationSchemaUri" ];
+            string root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Substring(6);
+			string plugin_config_uri = Path.Combine(root, ConfigurationManager.AppSettings[
+				"pluginConfigurationUri" ]);
+			string plugin_config_schema_uri = Path.Combine(root, ConfigurationManager.AppSettings[
+				"pluginConfigurationSchemaUri" ]);
 			DataSet plugin_ds = new DataSet();
 			try
 			{
@@ -421,8 +422,9 @@ namespace Sudowin.Server
 
 			// verify that this service and the sudo console app
 			// are both signed with the same strong name key
+            string root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Substring(6);
 			if ( !VerifySameSignature( un,
-				ConfigurationManager.AppSettings[ "callbackApplicationPath" ] ) )
+				Path.Combine(root, ConfigurationManager.AppSettings[ "callbackApplicationPath" ]) ) )
 			{
                 LogResult(un, commandPath, commandArguments, ui.LoggingLevel,
                     SudoResultTypes.CommandNotAllowed);
@@ -613,6 +615,8 @@ namespace Sudowin.Server
 			si.Desktop = "WinSta0\\Default";
 			si.Size = Marshal.SizeOf( si );
 
+            string root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Substring(6);
+
 			// build a formatted command path to call the Sudowin.ConsoleApplication with
 			string fcp = string.Format(
 				CultureInfo.CurrentCulture,
@@ -623,7 +627,7 @@ namespace Sudowin.Server
 				//"\"{0}\" -c -p \"{1}\" \"{2}\" {3}",
 				
 				"\"{0}\"  \"{1}\" \"{2}\" {3}",
-				ConfigurationManager.AppSettings[ "callbackApplicationPath" ],
+				Path.Combine(root, ConfigurationManager.AppSettings[ "callbackApplicationPath" ]),
 				 passphrase,
 				commandPath, commandArguments );
 

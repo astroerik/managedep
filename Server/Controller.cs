@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System;
+using System.IO;
 using System.Data;
 using Sudowin.Common;
 using Sudowin.Plugins;
@@ -121,10 +122,11 @@ namespace Sudowin.Server
 		
 		private void LoadPlugins()
 		{
-			string plugin_config_uri = ConfigurationManager.AppSettings[ 
-				"pluginConfigurationUri" ];
-			string plugin_config_schema_uri = ConfigurationManager.AppSettings[
-				"pluginConfigurationSchemaUri" ];
+            string root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Substring(6);
+			string plugin_config_uri = Path.Combine(root, ConfigurationManager.AppSettings[ 
+				"pluginConfigurationUri" ]);
+			string plugin_config_schema_uri = Path.Combine(root, ConfigurationManager.AppSettings[
+				"pluginConfigurationSchemaUri" ]);
 			DataSet plugin_ds = new DataSet();
 			try
 			{

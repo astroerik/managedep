@@ -15,8 +15,7 @@ namespace Sudowin.Clients.Gui
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault( false );
 			MainForm mf = new MainForm();
-			if ( !mf.ExitedEarlyWithCachedCredentials )
-				Application.Run( mf );
+    		Application.Run( mf );
 		}
 	}
 }
