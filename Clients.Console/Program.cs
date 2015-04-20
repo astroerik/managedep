@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using Sudowin.Common;
 using System.Reflection;
@@ -37,72 +38,45 @@ using System.Runtime.Remoting;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
+using CommandLine;
+using CommandLine.Text;
 
 namespace Sudowin.Clients.Console
 {
 	class Program
 	{
+        class Options
+        {
+            [ValueOption(0)]
+            public string Command { get; set; }
+
+            [ValueList(typeof(List<string>))]
+            public IList<string> Arguments { get; set; }
+
+            [ParserState]
+            public IParserState LastParserState { get; set; }
+
+            [HelpOption]
+            public string GetUsage()
+            {
+                return HelpText.AutoBuild(this,
+                    (HelpText current) => HelpText.DefaultParsingErrorsHandler(this, current));
+            }
+        }
+
 		static void Main( string[] args )
 		{
-			switch ( args.Length )
-			{
-				// print the help menu
-				case 0:
-				{
-					PrintHelpMenu();
-					break;
-				}
-				// -h
-				// -v
-				// %cmd%
-				case 1:
-				{
-					if ( Regex.IsMatch( args[ 0 ], @"^--?(h|\?|(help))$" ) )
-						PrintHelpMenu();
-					else if ( Regex.IsMatch( args[ 0 ], @"^--?(v|(version))$" ) )
-						PrintVersion();
-					else
-						InvokeSudo( string.Empty, args[ 0 ], string.Empty );
-					break;
-				}
-				// %cmd% %arg1%
-				case 2:
-				{
-					InvokeSudo( string.Empty, args[ 0 ], args[ 1 ] );
-					break;
-				}
-				// -p %pwd% %cmd%
-				// %cmd% %arg1% %arg2%
-				case 3:
-				{
-					if ( Regex.IsMatch( args[ 0 ], @"^--?(p|(password))$" ) )
-					{
-                        System.Console.WriteLine("Password={0}", args[1]);
-						InvokeSudo( args[ 1 ], args[ 2 ], string.Empty );
-					}
-					else
-					{
-						InvokeSudo( string.Empty, args[ 0 ], 
-							args[ 1 ] + " " + args[ 2 ] );
-					}
-					break;
-				}
-				// args.Length >= 4
-				default:
-				{
-					if ( Regex.IsMatch( args[ 0 ], @"^--?(p|(password))$" ) )
-					{
-						InvokeSudo( args[ 1 ], args[ 2 ], 
-							string.Join( " ", args, 3, args.Length - 3 ) );
-					}
-					else
-					{
-						InvokeSudo( string.Empty, args[ 0 ],
-							string.Join( " ", args, 1, args.Length - 1 ) );
-					}
-					break;
-				}
-			}
+            var options = new Options();
+            if (Parser.Default.ParseArguments(args, options))
+            {
+                InvokeSudo(string.Empty, options.Command,
+                    string.Join(" ", options.Arguments));
+            }
+
+            //        }
+            //        break;
+            //    }
+            //}
 		}
 
 		private static void InvokeSudo( 
@@ -164,6 +138,8 @@ namespace Sudowin.Clients.Console
 			// holds the result of the sudo invocation
 			SudoResultTypes srt;
 
+            iss.UpdateSudoers(true);
+
 			do
 			{
                 //if ( iss.ExceededInvalidLogonLimit )
@@ -200,50 +176,6 @@ namespace Sudowin.Clients.Console
 					password = string.Empty;
                 //}
 			} while ( srt == SudoResultTypes.InvalidLogon );
-		}
-
-		private static void PrintVersion()
-		{
-			System.Console.WriteLine();
-			System.Console.WriteLine( "sudo for windows by akutz at lostcreations dot com" );
-			System.Console.WriteLine( "{0}",
-				Assembly.GetExecutingAssembly().GetName().Version.ToString( 4 ) );
-			System.Console.WriteLine();
-		}
-
-		private static void PrintHelpMenu()
-		{
-			string menu = @"
-usage: sudo [OPTION]... [COMMAND] [ARGUMENTS]
-executes the COMMAND and its ARGUMENTS in the security context of a user's
-assigned privileges group
-
-    -p, --password            password of the user executing sudo
-
-                              if this option is not specified and
-                              the user's credentials are not cached
-                              a password prompt will appear requesting
-                              that the user enter their password
-
-    -v, --version             displays sudo version number
-    -h, --help                displays this menu
-    -?, --help                displays this menu
-
-    examples:
-
-      sudo c:\program files\microsoft visual studio 8\common7\ide\devenv.exe
-
-        will launch visual studio .net 2005 with elevated privileges
-
-      sudo -p mypassword cmd
-
-        will suppress sudo's password prompt using 'mypassword' instead
-        and launch the windows command shell with elevated privileges
-
-
-";
-
-			System.Console.WriteLine( menu );
 		}
 
 		static private string GetPassword()

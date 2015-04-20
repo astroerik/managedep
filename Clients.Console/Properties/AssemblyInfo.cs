@@ -29,6 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
+using CommandLine;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -45,3 +46,9 @@ using System.Runtime.CompilerServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid( "0750e3f7-dd1d-4b37-90d2-0e55f93d1992" )]
+
+[assembly: AssemblyUsage(
+    " ",
+    "Usage: sudo.exe [CMD] [OPTION]...",
+    @"       sudo c:\windows\system32\cmd.exe",
+    @"       sudo c:\<full path>\notepad.exe c:\<full path>\hosts")]

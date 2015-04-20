@@ -49,8 +49,8 @@ using System.Runtime.CompilerServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.1.038")]
-[assembly: AssemblyFileVersion("1.1.038")]
+[assembly: AssemblyVersion("1.1.039")]
+[assembly: AssemblyFileVersion("1.1.039")]
 
 
 #if DEBUG
