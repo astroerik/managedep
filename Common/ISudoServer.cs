@@ -56,9 +56,11 @@ namespace Sudowin.Common
 		///		SudoResultsTypes value.
 		/// </returns>
 		SudoResultTypes Sudo(
-			string password,
-			string commandPath,
+            string sUsername,
+            string commandPath,
 			string commandArguments );
+
+        SudoResultTypes UnSudo(string sUsername);
 
         bool UpdateSudoers(bool bForce=false);
         

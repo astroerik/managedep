@@ -60,32 +60,56 @@ catch (e) {
 //}
 
 try {
-    sql = "SELECT `Component_` FROM `File` WHERE `FileName`='SUDOWI~2.EXE|Sudowin.Server.exe'";
+    sql = "SELECT `Component_` FROM `File` WHERE `FileName`='SUDOWI~1.EXE|Sudowin.Server.exe'";
     view = database.OpenView(sql);
     view.Execute();
     record = view.Fetch();
     var serviceC = record.StringData(1);
     view.Close();
     database.commit();
+}
+catch (e) {
+    WScript.StdErr.WriteLine("Service Config: Sudowin.Server");
+    WScript.StdErr.WriteLine(e.description);
+}
 
+try {
     sql = "INSERT INTO ServiceControl (ServiceControl,Name,Event,Arguments,Wait,Component_) VALUES ('Sudowin Install','Sudowin',1,null,0,'" + serviceC + "')";
     view = database.OpenView(sql);
     view.Execute();
     view.Close();
     database.commit();
-    
+}
+catch (e) {
+    WScript.StdErr.WriteLine("Service Config: Sudowin Install");
+    WScript.StdErr.WriteLine(e.description);
+}
+
+try {
     sql = "INSERT INTO ServiceControl (ServiceControl,Name,Event,Arguments,Wait,Component_) VALUES ('Sudowin Stop\\Uninstall','Sudowin',160,null,1,'" + serviceC + "')";
     view = database.OpenView(sql);
     view.Execute();
     view.Close();
     database.commit();
-    
+}
+catch (e) {
+    WScript.StdErr.WriteLine("Service Config: Sudowin Stop\\Uninstall");
+    WScript.StdErr.WriteLine(e.description);
+}
+
+try {
     sql = "INSERT INTO ServiceControl (ServiceControl,Name,Event,Arguments,Wait,Component_) VALUES ('Sudowin Install Stop\\Delete','Sudowin',10,null,1,'" + serviceC + "')";
     view = database.OpenView(sql);
     view.Execute();
     view.Close();
     database.commit();
+}
+catch (e) {
+    WScript.StdErr.WriteLine("Service Config: Sudowin Install Stop\\Delete");
+    WScript.StdErr.WriteLine(e.description);
+}
 
+try {
     sql = "INSERT INTO ServiceInstall (ServiceInstall,Name,DisplayName,ServiceType,StartType,ErrorControl,LoadOrderGroup,Dependencies,StartName,Password,Arguments,Component_,Description) VALUES ('SudowinInstall1','Sudowin','Sudowin',16,2,1,null,null,null,null,null,'" + serviceC + "','Hosts the server that sudo clients communicate with in order to facilitate privilege escalation.')";
     view = database.OpenView(sql);
     view.Execute();
@@ -93,7 +117,7 @@ try {
     database.commit();
 }
 catch (e) {
-    WScript.StdErr.WriteLine("Service Config");
+    WScript.StdErr.WriteLine("Service Config: Service Install");
     WScript.StdErr.WriteLine(e.description);
 }
 
@@ -107,7 +131,14 @@ try {
     view.Close();
     database.commit();
 
-    sql = "INSERT INTO Environment (Environment,Name,Value,Component_) VALUES ('SudowinConsole','*+-Path','[~];[TARGETDIR]Clients\\Console','" + consoleClientC + "')";
+}
+catch (e) {
+    WScript.StdErr.WriteLine("Service Config");
+    WScript.StdErr.WriteLine(e.description);
+}
+
+try {
+    sql = "INSERT INTO Environment (Environment,Name,Value,Component_) VALUES ('SudowinConsole','*+-Path','[~];[TARGETDIR]','" + consoleClientC + "')";
     view = database.OpenView(sql);
     view.Execute();
     view.Close();

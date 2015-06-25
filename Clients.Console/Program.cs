@@ -40,6 +40,7 @@ using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using CommandLine;
 using CommandLine.Text;
+using Microsoft.Win32;
 
 namespace Sudowin.Clients.Console
 {
@@ -64,23 +65,17 @@ namespace Sudowin.Clients.Console
             }
         }
 
+        [STAThread]
 		static void Main( string[] args )
 		{
             var options = new Options();
             if (Parser.Default.ParseArguments(args, options))
             {
-                InvokeSudo(string.Empty, options.Command,
-                    string.Join(" ", options.Arguments));
+                InvokeSudo(options.Command, string.Join(" ", options.Arguments));
             }
-
-            //        }
-            //        break;
-            //    }
-            //}
 		}
 
 		private static void InvokeSudo( 
-			string password, 
 			string commandPath, 
 			string commandArguments )
 		{
@@ -95,8 +90,7 @@ namespace Sudowin.Clients.Console
 			#region configure remoting
 
 			// get path to the actual exe
-			Uri uri = new Uri(
-				Assembly.GetExecutingAssembly().GetName().CodeBase );
+			Uri uri = new Uri( Assembly.GetExecutingAssembly().GetName().CodeBase );
 
 			// configure remoting channels and objects
 			RemotingConfiguration.Configure( uri.LocalPath + ".config", true );
@@ -106,16 +100,14 @@ namespace Sudowin.Clients.Console
 			// caching credentials
 
 			// get an array of the registered well known client urls
-			WellKnownClientTypeEntry[] wkts =
-				RemotingConfiguration.GetRegisteredWellKnownClientTypes();
+			WellKnownClientTypeEntry[] wkts = RemotingConfiguration.GetRegisteredWellKnownClientTypes();
 
 			// loop through the list of well known clients until
 			// the SudoServer object is found
 			ISudoServer iss = null;
 			for ( int x = 0; x < wkts.Length && iss == null; ++x )
 			{
-				iss = Activator.GetObject( typeof( ISudoServer ),
-					wkts[ x ].ObjectUrl ) as ISudoServer;
+				iss = Activator.GetObject( typeof( ISudoServer ),wkts[ x ].ObjectUrl ) as ISudoServer;
 			}
 
 			#endregion
@@ -136,76 +128,57 @@ namespace Sudowin.Clients.Console
 			}
 
 			// holds the result of the sudo invocation
-			SudoResultTypes srt;
+			SudoResultTypes srt = SudoResultTypes.UsernameNotFound;
 
-            iss.UpdateSudoers(true);
-
-			do
-			{
-                //if ( iss.ExceededInvalidLogonLimit )
-                //{
-                //    System.Console.WriteLine( "Locked out" );
-                //    srt = SudoResultTypes.LockedOut;
-                //}
-                //else
-                //{
-					// if the password was not passed into this program as
-					// a command line argument and the user's credentials
-					// are not cached then ask the user for their password
-                    if (password.Length == 0 /*&& !iss.AreCredentialsCached*/)
-                    {
-                        password = GetPassword();
-                    }
-
-					// invoke sudo
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            try
+            {
+                iss.UpdateSudoers(true);
+                srt = iss.Sudo(identity.Name, commandPath, commandArguments);
+                if (srt == SudoResultTypes.SudoK || srt == SudoResultTypes.SudoKAdded)
+                {
+                    var exeName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                    ProcessStartInfo startInfo = new ProcessStartInfo(commandPath);
+                    startInfo.Arguments = commandArguments;
+                    startInfo.Verb = "runas";
                     try
                     {
-                        srt = iss.Sudo(password, commandPath, commandArguments);
+                        System.Diagnostics.Process.Start(startInfo);
                     }
-                    catch (SudoException ex)
+                    catch (Exception)
                     {
-                        System.Console.WriteLine(ex.Message);
-                        srt = ex.SudoResultType;
-                    }
-
-					// set the password to an empty string.  this is not for
-					// security as one might think but rather so if the result
-					// of Sudo was InvalidLogon the next iteration through this
-					// loop will prompt the user for their password instead
-					// of using this password known to be invalid
-					password = string.Empty;
-                //}
-			} while ( srt == SudoResultTypes.InvalidLogon );
-		}
-
-		static private string GetPassword()
-		{
-			// password for this method to return
-			string password = string.Empty;
-
-			System.Text.StringBuilder pwd =
-				new System.Text.StringBuilder( 100 );
-			System.Console.WriteLine();
-			System.Console.Write( "Passphrase: " );
-			ConsoleKeyInfo cki;
-			do
-			{
-				cki = System.Console.ReadKey( true );
-                if (cki.Key == ConsoleKey.Backspace)
-                {
-                    if (pwd.Length > 0)
-                    {
-                        pwd.Length--;   // chop character off end
+                        //if the user cancels we don't really care, just unsudo them and exit
                     }
                 }
-                else if (cki.Key != ConsoleKey.Enter)
+                else
                 {
-                    pwd.Append(cki.KeyChar);
+                    System.Console.WriteLine("Unknown error occurred");
                 }
-			} while ( cki.Key != ConsoleKey.Enter );
-			password = pwd.ToString();
-					
-			return ( password );
+            }
+            catch (SudoException ex)
+            {
+                System.Console.WriteLine(ex.Message);
+                srt = ex.SudoResultType;
+            }
+            catch (Exception)
+            {
+                System.Console.WriteLine("Unknown error occurred");
+                srt = SudoResultTypes.SudoError;
+            }
+            finally
+            {
+                try
+                {
+                    if (srt == SudoResultTypes.SudoKAdded)
+                    {
+                        iss.UnSudo(identity.Name);
+                    }
+                }
+                catch (Exception ex) {
+                    System.Console.WriteLine(ex.Message);
+                }
+            }
 		}
 	}
 }

@@ -80,6 +80,11 @@ namespace Sudowin.Common
         /// <summary>
         /// Group name note found in directory services.
         /// </summary>
-        GroupNotFound = 6
+        GroupNotFound = 6,
+
+        /// <summary>
+        /// SudoKAdded User was added to Administrators group
+        /// </summary>
+        SudoKAdded = 7,
 	}
 }

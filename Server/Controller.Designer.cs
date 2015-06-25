@@ -26,12 +26,14 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+using System.ServiceProcess;
+
 namespace Sudowin.Server
 {
 	/// <summary>
 	///		Service controller for the Sudowin service.
 	/// </summary>
-	partial class Controller
+	partial class Controller : ServiceBase
 	{
 		/// <summary> 
 		///		Required designer variable.

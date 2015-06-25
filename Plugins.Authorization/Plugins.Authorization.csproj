@@ -11,7 +11,8 @@
     <RootNamespace>Sudowin.Plugins.Authorization</RootNamespace>
     <AssemblyName>Sudowin.Plugins.Authorization</AssemblyName>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>sudowin.snk.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -52,9 +53,6 @@
     <Compile Include="AuthorizationPlugin.cs" />
     <Compile Include="IAuthorizationPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="sudowin.snk.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

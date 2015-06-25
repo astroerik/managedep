@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
 using System.CodeDom.Compiler;
+using Microsoft.Win32;
 
 using LINQtoCSV;
 
@@ -21,7 +22,9 @@ namespace Sudowin.Common
 
             try
             {
-                WebRequest request = WebRequest.Create("https://gs-aetdfile.ndc.nasa.gov/aetd/sudoers.csv");
+                string sudoersLocation = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\SudoWin\\", "Sudoers", "https://gs-aetdfile.ndc.nasa.gov/aetd/sudoers.xml");
+
+                WebRequest request = WebRequest.Create(sudoersLocation);
                 ((HttpWebRequest)request).UserAgent = String.Format("AETD Sudowin ({0})", typeof(CSVtoXML).Assembly.GetName().Version);
                 ((HttpWebRequest)request).Timeout = 4500;
                 ((HttpWebRequest)request).ReadWriteTimeout = 4500;
@@ -30,94 +33,16 @@ namespace Sudowin.Common
                 {
                     using (var tempFile = new TempFileCollection())
                     {
-                        string file = tempFile.AddExtension("csv");
+                        string file = tempFile.AddExtension("xml");
                         Stream responseStream = response.GetResponseStream();
                         using (FileStream fileStream = File.Create(file))
                         {
                             responseStream.CopyTo(fileStream);
                         }
 
-                        CsvFileDescription sudoersCSV = new CsvFileDescription
-                        {
-                            SeparatorChar = ',',
-                            FirstLineHasColumnNames = true
-                        };
+                        file
 
-                        CsvContext csvContext = new CsvContext();
-                        IEnumerable<Sudoer> sudoers = csvContext.Read<Sudoer>(file, sudoersCSV);
-                        sudoers = (from s in sudoers where s.System.ToUpper() == System.Environment.MachineName.ToUpper() select s).OrderBy(s => s.Username);
-                    
-                        XmlDocument xmlDoc = new XmlDocument();
-                        XmlSchema xmlSchema = new XmlSchema();
-                        xmlSchema.Namespaces.Add("xmlns", "http://sudowin.sourceforge.net/schemas/XmlAuthorizationPlugin/");
-                        xmlDoc.Schemas.Add(xmlSchema);
-
-                        XmlDeclaration xmlDeclaration = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
-                        XmlElement root = xmlDoc.DocumentElement;
-
-                        xmlDoc.InsertBefore(xmlDeclaration, root);
-
-                        XmlElement sudoersXml = xmlDoc.CreateElement(string.Empty, "sudoers", string.Empty);
-                        sudoersXml.SetAttribute("privilegesGroup", "Administrators");
-                        sudoersXml.SetAttribute("loggingLevel", "Both");
-                        sudoersXml.SetAttribute("allowAllCommands", "false");
-                        sudoersXml.SetAttribute("startTime", "00:00:00.00000");
-                        sudoersXml.SetAttribute("endTime", "23:59:59.99999");
-                        xmlDoc.AppendChild(sudoersXml);
-
-                        XmlElement usersXml = xmlDoc.CreateElement(string.Empty, "users", string.Empty);
-                        sudoersXml.AppendChild(usersXml);
-
-                        XmlElement usersGroupXml = xmlDoc.CreateElement(string.Empty, "userGroup", string.Empty);
-                        usersGroupXml.SetAttribute("name", "sudoers");
-                        usersXml.AppendChild(usersGroupXml);
-
-                        XmlElement usersGroupUsersXml = xmlDoc.CreateElement(string.Empty, "users", string.Empty);
-                        usersGroupXml.AppendChild(usersGroupUsersXml);
-
-                        string lastUsername = "";
-                        XmlElement userXml = null;
-                        XmlElement commandsXml = null;
-                        foreach (Sudoer sudoer in sudoers)
-                        {
-                            if (sudoer.Username != lastUsername)
-                            {
-                                lastUsername = sudoer.Username;
-                                userXml = xmlDoc.CreateElement(string.Empty, "user", string.Empty);
-                                usersGroupUsersXml.AppendChild(userXml);
-                                userXml.SetAttribute("name", sudoer.Username);
-                                if (sudoer.Path == "*")
-                                {
-                                    userXml.SetAttribute("allowAllCommands", "true");
-                                    commandsXml = null;
-                                    continue;
-                                }
-                                else
-                                {
-                                    userXml.SetAttribute("allowAllCommands", "false");
-                                    commandsXml = xmlDoc.CreateElement(string.Empty, "commands", string.Empty);
-                                    userXml.AppendChild(commandsXml);
-                                }
-                            }
-                            
-                            //we have a userXml now and commandsXml so we're appending things
-                            XmlElement commandXml = xmlDoc.CreateElement(string.Empty, "command", string.Empty);
-                            commandXml.SetAttribute("path", sudoer.Path);
-
-                            if (sudoer.Checksum != null)
-                            {
-                                commandXml.SetAttribute("md5Checksum", sudoer.Checksum);
-                            }
-
-                            if (sudoer.Arguments != null)
-                            {
-                                commandXml.SetAttribute("argumentString", sudoer.Arguments);
-                            }
-
-                            commandsXml.AppendChild(commandXml);
-                        }
-
-                        using (var stringWriter = new StringWriter())
+                        var stringWriter = new StringWriter();
                         using (var xmlTextWriter = XmlWriter.Create(stringWriter))
                         {
                             xmlDoc.WriteTo(xmlTextWriter);

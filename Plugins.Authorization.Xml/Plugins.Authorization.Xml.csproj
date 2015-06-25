@@ -49,10 +49,6 @@
     <Compile Include="XmlAuthorizationPlugin.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CSVtoXML\CSVtoXML.csproj">
-      <Project>{d5dc6fbd-d26c-4811-a1bf-27a6e9906883}</Project>
-      <Name>CSVtoXML</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Plugins.Authorization\Plugins.Authorization.csproj">
       <Project>{7937C406-0E88-4E48-AA1F-964E8FB8C1AD}</Project>
       <Name>Plugins.Authorization</Name>

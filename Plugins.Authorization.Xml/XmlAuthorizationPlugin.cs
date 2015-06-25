@@ -41,6 +41,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Runtime.Remoting.Lifetime;
+using Microsoft.Win32;
 
 namespace Sudowin.Plugins.Authorization.Xml
 {
@@ -259,33 +260,40 @@ namespace Sudowin.Plugins.Authorization.Xml
 					}
 					else
 					{
-						DirectoryEntry domain = new DirectoryEntry();
+                        try
+                        {
+                            DirectoryEntry domain = new DirectoryEntry();
 
-						DirectorySearcher dsrchr = new DirectorySearcher(
-							domain, "samAccountName=" + grp_gn_part, null, SearchScope.Subtree );
-						SearchResult sr = dsrchr.FindOne();
-						if ( sr == null )
-						{
-							break;
-						}
-						DirectoryEntry group = sr.GetDirectoryEntry();
+                            DirectorySearcher dsrchr = new DirectorySearcher(
+                                domain, "samAccountName=" + grp_gn_part, null, SearchScope.Subtree);
+                            SearchResult sr = dsrchr.FindOne();
+                            if (sr == null)
+                            {
+                                break;
+                            }
+                            DirectoryEntry group = sr.GetDirectoryEntry();
 
-						dsrchr = new DirectorySearcher(
-							domain, "samAccountName=" + usr_un_part, null, SearchScope.Subtree );
-						sr = dsrchr.FindOne();
-						if ( sr == null )
-						{
-							break;
-						}
-						DirectoryEntry user = sr.GetDirectoryEntry();
+                            dsrchr = new DirectorySearcher(
+                                domain, "samAccountName=" + usr_un_part, null, SearchScope.Subtree);
+                            sr = dsrchr.FindOne();
+                            if (sr == null)
+                            {
+                                break;
+                            }
+                            DirectoryEntry user = sr.GetDirectoryEntry();
 
-						is_member = bool.Parse( Convert.ToString(
-							group.Invoke( "IsMember", user.Path ),
-							CultureInfo.CurrentCulture ) );
-						
-						user.Close();
-						group.Close();
-						domain.Close();
+                            is_member = bool.Parse(Convert.ToString(
+                                group.Invoke("IsMember", user.Path),
+                                CultureInfo.CurrentCulture));
+
+                            user.Close();
+                            group.Close();
+                            domain.Close();
+                        }
+                        catch (Exception)
+                        {
+                            //network is probably disabled
+                        }
 					}
 
 					// if the user belongs to this user group then return
@@ -440,7 +448,11 @@ namespace Sudowin.Plugins.Authorization.Xml
                     //get the latest file!
                     try
                     {
-                        string xml = (new CSVtoXML()).GetXML();
+                        string sudoersLocation = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\SudoWin\\", "Sudoers", "https://gs-aetdfile.ndc.nasa.gov/aetd/sudoers.xml");
+
+                        WebClient webpage = new WebClient();
+                        string xml = webpage.DownloadString(sudoersLocation);
+
                         if (xml.Length > 0)
                         {
                             File.WriteAllText(DataSourceConnectionString, xml);

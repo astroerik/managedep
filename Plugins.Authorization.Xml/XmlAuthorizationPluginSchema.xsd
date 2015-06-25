@@ -28,7 +28,7 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 -->
-<xs:schema id="XmlAuthorizationPluginSchema" targetNamespace="http://sudowin.sourceforge.net/schemas/XmlAuthorizationPlugin/" xmlns="http://sudowin.sourceforge.net/schemas/XmlAuthorizationPlugin/" xmlns:mstns="http://sudowin.sourceforge.net/schemas/XmlAuthorizationPlugin/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" version="1.1" msdata:CaseSensitive="true" elementFormDefault="qualified">
+<xs:schema id="XmlAuthorizationPluginSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" version="1.1" msdata:CaseSensitive="true" elementFormDefault="qualified">
 	<xs:element name="sudoers">
 		<xs:complexType>
 			<xs:sequence>
@@ -131,7 +131,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	<xs:complexType name="userGroupsType">
 		<xs:sequence>
 			<xs:sequence minOccurs="0" maxOccurs="unbounded">
-				<xs:element name="userGroup" type="userGroupType" />
+        <xs:element name="user" type="userType" />
+        <xs:element name="userGroup" type="userGroupType" />
 			</xs:sequence>
 		</xs:sequence>
 	</xs:complexType>
