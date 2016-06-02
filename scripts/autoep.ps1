@@ -19,7 +19,7 @@ if ($debug) {
 }
 
 $ErrorActionPreference = "Stop"
-$logName = "AETD"
+$logName = "COMPANYLOG"
 
 Import-Module "\\fileserver.localdomain\PSModules$\Logging"
 $success = (SetupLogs -sources @('AutoEP'))
@@ -66,7 +66,7 @@ try {
 
     $local_context = $(New-Object -TypeName System.DirectoryServices.AccountManagement.PrincipalContext -ArgumentList $([System.DirectoryServices.AccountManagement.ContextType]::Machine), $env:COMPUTERNAME)
     $domain_context = [System.DirectoryServices.AccountManagement.ContextType]::Domain
-    #$(New-Object -TypeName System.DirectoryServices.AccountManagement.PrincipalContext 'Domain', "NDC")
+    #$(New-Object -TypeName System.DirectoryServices.AccountManagement.PrincipalContext 'Domain', "DOMAIN")
 
     # now they're converted to distingishednames
     $validEPGroups = '(|' + [string]::join('', @($searcher.findall() |ForEach-Object { '(memberOf=' + $_.Properties['distinguishedname'] + ')' })) + ')'
@@ -75,7 +75,7 @@ try {
     if ($ep) {
         $epMembers = '(|' + [string]::join('', @($ep|ForEach-Object { '(sAMAccountName=' + $_.account.Split('\')[1] + ')' })) + ')'
         $searcher.Filter = '(&' + $validEPGroups + $epMembers + ')'
-        $validEP += @($searcher.findall() |ForEach-Object { 'ndc\' + $_.Properties['samaccountname'] })
+        $validEP += @($searcher.findall() |ForEach-Object { 'domain\' + $_.Properties['samaccountname'] })
     }
 
     $localadmins = @()
@@ -85,7 +85,7 @@ try {
     $localadmins | ForEach-Object {
         $account = $_
         $accountname = $_.SamAccountName
-        If ($_.ContextType -eq "Domain") { $accountname = $("NDC\" + $accountname) }
+        If ($_.ContextType -eq "Domain") { $accountname = $("DOMAIN\" + $accountname) }
         Write-Verbose "Local Admin: $accountname" 
         if ($validEP -notcontains $accountname -and $ignoreaccounts -notcontains $accountname) {
             try {
@@ -109,8 +109,8 @@ try {
         
         $user = $null
         $context = $local_context
-        If ($_.StartsWith("NDC")) {
-            $account = $account -replace "NDC\\", ''
+        If ($_.StartsWith("DOMAIN")) {
+            $account = $account -replace "DOMAIN\\", ''
             $context = $domain_context
         }
         
