@@ -1,0 +1,15 @@
+#username
+#list of accounts/groups that should be in the local administrators group on machines in this code
+#can take a second parameter on each line that designates with regex the computer names
+#if the second parameter is preceded by a - then it negates the match
+
+#these regex can get complex if so desired!
+#to test: http://www.regular-expressions.info/vbscriptexample.html
+
+DOMAIN\ADMINGROUP
+
+DOMAIN\ADMINGROUP,COMPUTERS
+DOMAIN\LABUSERSGROUP,COMPUTERB
+
+
+

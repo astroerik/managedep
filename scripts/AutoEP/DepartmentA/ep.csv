@@ -1,0 +1,4 @@
+#computername, username, expiration date
+# Lines that start with # are comments and will be ignored,,
+#example:,,
+#computernamea,domain\usera,2/9/13

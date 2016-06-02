@@ -1,0 +1,5 @@
+#Accounts in this file are ignored, regardless of what system the are on.
+#We use this for our Admin Groups.
+
+DOMAIN\ADMINGROUP
+DOMAIN\USERA
