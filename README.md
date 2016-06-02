@@ -6,4 +6,4 @@ This talk was given at HCE 2015, NolaCon 2015, and BSides Indianapolis 2016.
 
 Scripts have been relatively sanitized and are hopefully documented well enough. 
 
-While I'll be happy to answer questions, scripts are for reference only and I provide no support and offer no liability if they are implementd incorrectly. 
+While I'll be happy to answer questions, scripts are for reference only and I provide no support and offer no liability if they are implemented incorrectly. 
