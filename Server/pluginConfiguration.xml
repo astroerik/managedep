@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pluginConfiguration xmlns="http://sudowin.sourceforge.net/schemas/PluginConfiguration/">
+	<plugins>
+		<plugin pluginType="authorizationPlugin" 
+						assemblyString="Sudowin.Plugins.Authorization.Xml.XmlAuthorizationPlugin, Sudowin.Plugins.Authorization.Xml" 
+						dataSourceConnectionString="sudoers.xml" 
+						dataSourceSchemaUri="XmlAuthorizationPluginSchema.xsd" 
+		/>
+	</plugins>
+</pluginConfiguration>

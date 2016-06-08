@@ -1,0 +1,177 @@
+Copyright (c) 2005-2008, Schley Andrew Kutz <akutz@lostcreations.com>
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+    * Neither the name of l o s t c r e a t i o n s nor the names of its 
+    contributors may be used to endorse or promote products derived from this 
+    software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+CHANGELOG
+2008/09/30
+----------
+- Released Sudo for Windows version 0.4.2
+
+- New: sudowin can now launch applications based on their file types (e.g., 
+  sudo compmgmt.msc) [request: #1546870]
+
+- Change: no longer require user to be in Sudoers group to access Sudowin 
+  service [bug #1946742]
+  
+- Bugfix: configuration file is locked because xml reader is not closed for 
+  invalid xml. [bug #1946747]
+
+- Bugfix: add support for quiet uninstall [bug #1995331]
+
+- Bugfix: catch exception when writing to event log [bug #2120197]
+
+- Bugfix: when enumerating user sessions, username comparison was case-
+  sensitive, so failed to find user if case was different. updated to case-
+  insensitive search  [bug #1882018]
+  
+2008/01/10
+----------
+- Released Sudo for Windows version 0.4.1
+
+- Update Sudo to support Vista UAC
+
+- Update GUI client to get correct user account picture on Vista
+
+- Bugfix: trap exceptions when looking up users and groups and give meaning 
+  error message
+  
+- Add commandPath and commandArgument to Event Log entries [request #1534654]
+
+- Bugfix: logic for using password passed in on the command line was wrong. 
+  It was always getting reset to "" even when not cached. [bug #1707157] 
+  
+- Update console client to support backspace key so users can correct their 
+  password as they type
+
+- Bugfix: fix setup to work on Vista with UAC
+
+2006/01/30
+----------
+- Released Sudo for Windows version 0.4.0-r153
+
+- Added support for authorizing users based on local and domain group affiliation.
+
+2006/01/15
+----------
+- Released Sudo for Windows version 0.3.2-r147
+
+- Bugfix - Moderate - Corrects exception that gets thrown when any locale 
+other than en-US invokes sudowin.  This exception was occuring because
+there was a principal permission check for "NT AUTHORITY\SYSTEM" in the
+Plugins.CredentialsCache.LocalServer assembly in order to restrict 
+security sensitive methods to the SYSTEM user.  The rub is of course that
+the SYSTEM account is not spelled the same way in all languages.
+
+This bug was discovered by Lourival Neto.  Thanks Lourival!
+
+2006/01/10
+----------
+- Released Sudo for Windows version 0.3.1-r143
+
+- Bugfix - Minor - Corrects the problem where the console client would not 
+accept a zero-length password
+
+- Bugfix - Major - Corrects the problem where any account in the Sudoers 
+group could create a remoting client and access the data source that stored 
+encrypted credentials.  The credentials in question ARE encrypted, but a sudo 
+user could still gain access to them.  This has now been restricted to the 
+builtin account "NT AUTHORITY\SYSTEM".
+
+- Changed the console client's prompt from "Please enter your passphrase: 
+" to "Passphrase: ".
+
+2006/01/06
+----------
+- Released Sudo for Windows version 0.3.0-r139
+
+- Added support for restricting sudo based on originating network
+
+- Added support for caching remote plugin data sources locally
+
+- Incremented XmlAuthorizationPluginSchema.xsd version number from 1.0 to 1.1
+
+- Incremented PluginConfigurationSchema.xsd version number from 1.0 to 1.1
+
+2006/01/04
+----------
+- Released Sudo for Windows version 0.2.0-r134
+
+2006/01/03
+----------
+- Finished implementing md5Checksum code.
+
+- Added argumentString attribute to the commandNode entry of the 
+XmlAuthorizationFile schema.  This lets administrators restrict commands
+based on their arguments of a regular expression pattern that represents
+possible argument strings.
+
+2006/07/05
+----------
+- Renamed the namespace PublicLibrary to Common
+
+- Renamed Common.ManagedMethods to Common.Managed and source file accordingly
+
+- Renamed Common.Win32 to Common.Native and source file accordingly 
+
+2006/07/01
+----------
+- Created CachedCredentialsPlugin
+
+- Created CachedCredentialsPlugin.LocalServer
+
+2006/06/29
+----------
+- Added md5Checksum attribute to the command node.  This lets the administrator 
+associate md5 checksums against configured executables to ensure the integrity 
+of the file being sudoed.
+
+- Gracefully handles errors in the callback application.
+
+2006/06/25
+----------
+- Added allowAllCommands attribute to the default settings section in the 
+XmlAuthorizationPlugin section.  This will create an insecure mode where all 
+users can execute all commands.  This mode is not recommended and if used 
+should only be used on stand-a-lone machines where users wish to practice LUA, 
+but want easy sudo.
+
+
+2006/06/24
+----------
+- Released Sudo for Windows version 0.1.0 (r95)
+
+- Fixed bug that prevented Active Directory users from using sudo
+
+2006/06/20
+----------
+- released Sudo for Windows version 0.1.0 (r76)
+
+2006/06/17
+----------
+- changed the license copyright notice  to reflect the change from 
+"sakutz@gmail.com" to "akutz@lostcreations.com" and from "Lost Creations" to 
+"l o s t c r e a t i o n s"
+
+- changed too much to count
